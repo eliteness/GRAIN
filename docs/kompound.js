@@ -346,6 +346,7 @@ async function gubs()
 		data={"jsonrpc":"2.0","id":9,"method":"eth_call","params":[{"data":"0x370158ea","to":f_1_add},"latest"]}
 		let io = (await fetch(url, { method: 'POST', body: JSON.stringify(data), headers: {'Content-Type': 'application/json' } })).json();
 		await Promise.all([p,q,io]).then(s=>{
+			oi=[];for(i=0;i< (s[2].result.length-2)/64;i++){oi.push(Number("0x"+s[2].result.substr(2+64*i,64)))}
 		//DECIMALDEPENDENT : 1e18 => 1e6 , 1e18 => 1e12
 			$("wd-usd").innerHTML=((Number(s[0])/TS*VL)/(10**DECIMAL)).toFixed(DECIMAL);
 			$("wd-ab").innerHTML=(s[0]/(10**DECIMAL)).toFixed(DECIMAL);
