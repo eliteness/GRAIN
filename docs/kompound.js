@@ -341,8 +341,11 @@ async function gubs()
 		theLPT = new ethers.Contract(pairadd, farabi, provider);
 		var p = theCon.balanceOf(window.ethereum.selectedAddress)
 		var q = theLPT.balanceOf(window.ethereum.selectedAddress)
-		var info = theCon.info()
-		await Promise.all([p,q,info]).then(s=>{
+		//var info = theCon.info()
+		url=RPC_URL;
+		data={"jsonrpc":"2.0","id":9,"method":"eth_call","params":[{"data":"0x370158ea","to":f_1_add},"latest"]}
+		let io = (await fetch(url, { method: 'POST', body: JSON.stringify(data), headers: {'Content-Type': 'application/json' } })).json();
+		await Promise.all([p,q,io]).then(s=>{
 		//DECIMALDEPENDENT : 1e18 => 1e6 , 1e18 => 1e12
 			$("wd-usd").innerHTML=((Number(s[0])/TS*VL)/(10**DECIMAL)).toFixed(DECIMAL);
 			$("wd-ab").innerHTML=(s[0]/(10**DECIMAL)).toFixed(DECIMAL);
