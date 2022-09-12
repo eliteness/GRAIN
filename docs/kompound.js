@@ -351,7 +351,7 @@ async function gubs()
 			$("wd-usd").innerHTML=((Number(s[0])/TS*VL)/(10**DECIMAL)).toFixed(DECIMAL);
 			$("wd-ab").innerHTML=(s[0]/(10**DECIMAL)).toFixed(DECIMAL);
 			$("dep-ab").innerHTML=(s[1]/(10**DECIMAL)).toFixed(DECIMAL);
-			$("redemp").innerHTML=(s[0] * s[2][1] / (10**(2*DECIMAL))).toFixed(DECIMAL);
+			$("redemp").innerHTML=(s[0] * oi[1] / (10**(2*DECIMAL))).toFixed(DECIMAL);
 		})
 	}
 	catch(e){console.log(e);/*$("cw_m").innerHTML=e*/}
