@@ -72,6 +72,7 @@ async function basetrip()
 		window.location.reload
 	}
 	DrefreshFarm()
+	pantvl()
 	arf()
 }
 async function cw()
