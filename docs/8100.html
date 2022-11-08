@@ -313,6 +313,89 @@ function paint(el,da,na,la) {
 
 }
 Chart.defaults.color="#fff";
+
+function paint2(el,da,na,la,hi) {
+
+	new Chart(el, {
+		type: "line",
+		data: {
+			datasets: [
+				{
+    				data: da[1],
+					label: la[1],
+					backgroundColor: '#c1464f',
+					borderColor: 'rgb(200, 20, 20)',
+					hidden: hi[1],
+				},
+				{
+    				data: da[2],
+					label: la[2],
+					backgroundColor: 'gold',
+					borderColor: 'goldenrod',
+					hidden: hi[2],
+				}
+			]
+		},
+		options: {
+    		scales: {
+        		x: {
+            		type: 'time',
+                	time: {
+                		unit: 'day'
+                	}
+        		},
+        		y: {
+        			grid: {
+        				color: "#000"
+        			},
+        			//type: 'logarithmic',
+        			//min: 0.007
+        		}
+    		},
+    		interaction: {
+      			intersect: false
+    		},
+    		plugins: {
+				title: {
+    				display: false,
+    				text: na,
+    				padding: {
+        				top: 10,
+        				bottom: 30
+    				}
+    			},
+    			legend :{
+    				display: true,
+    			},
+    			tooltip: {
+                callbacks: {
+                    label: function(context) {
+                        let label = context.dataset.label || '';
+
+                        if (label) {
+                            label += ': ';
+                        }
+                        if (context.parsed.y !== null) {
+                            label += fornum(context.parsed.y,0) +" %";
+                        }
+                        return label;
+                    }
+                }
+            }
+            },
+			animations: {
+				tension: {
+					duration: 10000,
+					easing: 'linear',
+					from: 1,
+					to: 0,
+					loop: false
+				}
+    		}
+    	}
+	});
+
+}
 function paint3(el,da,na,la,hi) {
 
 	new Chart(el, {
@@ -477,11 +560,12 @@ function paintall() {
 	paint('mc_tvl',c_tvl,'Market Capitalization', 'Total Value Locked in USD')
 	paint('mc_aum',c_aum(),'Assets Under Management','in AERA')
 	paint('mc_shp',c_shp(),'Accrued Yield, R.O.I., Relative Growth','AES Price in AERA')
-	paint('mc_sup',c_sup(),'Total Outstanding Supply', 'in AES')
+	//paint('mc_sup',c_sup(),'Total Outstanding Supply', 'in AES')
 	//paint('mc_apr',c_apr(),'Annualized Percentage Return','Base APR in %')
 	//paint('mc_apy',c_apy(),'Annualized Percentage Yield','Rolling APY in %')
 	paint('mc_pri',c_price(),'Open-Market Valuation','Price per AES in USD')
 	paint3("mc_ypr", [c_apr(),c_apy(),c_rrr()], "Yield Rates", ["Base emission APR in %", "Rolling APY per compound in %", "All-time normalized APY in %"], [0,0,0])
+	paint2("mc_sup", [,c_sup(),c_aum()], "Balance-sheet Assets", ["", "Total Outstanding Supply, in AES", 'Assets Under Management, in AERA'], [1,0,0])
 }
 
 paintall()
