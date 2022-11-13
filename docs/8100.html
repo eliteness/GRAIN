@@ -110,10 +110,24 @@ This strategy takes in AERA Tokens as collateral deposits for issuing the AES to
 0.1% deposit fees & Zero withdrawal fees.
 <br><span style="font-size:0.8em">Earn 1% on each harvest, paid to active users on each compound.</span>
 
-<br><br><br><br><br>
-<h3>Performance Statistics for this Vault</h3>
+<br><br><br><br>
+<h2>Performance Statistics</h2>
+<br><br>
+<h3>Current (Real-time) Vitals of this Vault</h3>
 <div class="cards">
 
+	<div class="card">
+		<br>
+		<span id="c_aar">0.000 %</span>
+		<hr>
+		Rolling APY at last compound
+	</div>
+	<div class="card">
+		<br>
+		<span id="c_aab">0.000 %</span>
+		<hr>
+		Base-emission APR
+	</div>
 	<div class="card">
 		<br>
 		<span id="c_aa">0.000 %</span>
@@ -157,8 +171,10 @@ This strategy takes in AERA Tokens as collateral deposits for issuing the AES to
  💡 <i> Current APY can be quite different compared to the historical average!</i>
 
 
-<br><br>
-<h2>Historical Performance</h2><br>
+<br><br><br><br>
+<h3>Historical Performance since Inception</h3>
+<i>Past Data is recorded at each 10,000th block of Metis Blockchain. Being an optmismtic rollup, this results in more precise data during high-activity periods!</i>
+<br><br><br><br>
 <div id="charts">
 
 
@@ -167,7 +183,7 @@ This strategy takes in AERA Tokens as collateral deposits for issuing the AES to
 
 <canvas id="mc_shp" style="width:80%;height:50vh;max-height:500px"></canvas><br><br><br><br>
 <canvas id="mc_tvl" style="width:80%;height:50vh;max-height:500px"></canvas><br><br><br><br>
-<canvas id="mc_aum" style="width:80%;height:50vh;max-height:500px"></canvas><br><br><br><br>
+<!--<canvas id="mc_aum" style="width:80%;height:50vh;max-height:500px"></canvas><br><br><br><br>-->
 <canvas id="mc_ypr" style="width:80%;height:50vh;max-height:500px"></canvas><br><br><br><br>
 <canvas id="mc_pri" style="width:80%;height:50vh;max-height:500px"></canvas><br><br><br><br>
 <canvas id="mc_sup" style="width:80%;height:50vh;max-height:500px"></canvas>
@@ -273,7 +289,7 @@ c_tot=
 
 function paint(el,da,na,la) {
 
-	new Chart(el, {
+	return new Chart(el, {
 		type: "line",
 		data: {
 			datasets: [{
@@ -289,7 +305,15 @@ function paint(el,da,na,la) {
             		type: 'time',
                 	time: {
                 		unit: 'day'
-                	}
+                	},
+        			grid: {
+        				color: "rgba(255,255,255,0.05)"
+        			}
+        		},
+        		y: {
+        			grid: {
+        				color: "rgba(255,255,255,0.1)"
+        			}
         		}
     		},
     		interaction: {
@@ -316,7 +340,7 @@ Chart.defaults.color="#fff";
 
 function paint2(el,da,na,la,hi) {
 
-	new Chart(el, {
+	return new Chart(el, {
 		type: "line",
 		data: {
 			datasets: [
@@ -342,11 +366,14 @@ function paint2(el,da,na,la,hi) {
             		type: 'time',
                 	time: {
                 		unit: 'day'
-                	}
+                	},
+        			grid: {
+        				color: "rgba(255,255,255,0.05)"
+        			}
         		},
         		y: {
         			grid: {
-        				color: "#000"
+        				color: "rgba(255,255,255,0.1)"
         			},
         			//type: 'logarithmic',
         			//min: 0.007
@@ -398,7 +425,7 @@ function paint2(el,da,na,la,hi) {
 }
 function paint3(el,da,na,la,hi) {
 
-	new Chart(el, {
+	return new Chart(el, {
 		type: "line",
 		data: {
 			datasets: [
@@ -431,11 +458,14 @@ function paint3(el,da,na,la,hi) {
             		type: 'time',
                 	time: {
                 		unit: 'day'
-                	}
+                	},
+        			grid: {
+        				color: "rgba(255,255,255,0.05)"
+        			}
         		},
         		y: {
         			grid: {
-        				color: "#000"
+        				color: "rgba(255,255,255,0.1)"
         			},
         			//type: 'logarithmic',
         			//min: 0.007
@@ -557,16 +587,95 @@ function c_apy() {
 
 
 function paintall() {
-	paint('mc_tvl',c_tvl,'Market Capitalization', 'Total Value Locked in USD')
-	paint('mc_aum',c_aum(),'Assets Under Management','in AERA')
-	paint('mc_shp',c_shp(),'Accrued Yield, R.O.I., Relative Growth','AES Price in AERA')
+	mc_tvl = paint('mc_tvl',c_tvl,'Market Capitalization', 'Total Value Locked in USD')
+	//mc_aum = paint('mc_aum',c_aum(),'Assets Under Management','in AERA')
+	mc_shp = paint('mc_shp',c_shp(),'Accrued Yield, R.O.I., Relative Growth','AES Price in AERA')
 	//paint('mc_sup',c_sup(),'Total Outstanding Supply', 'in AES')
 	//paint('mc_apr',c_apr(),'Annualized Percentage Return','Base APR in %')
 	//paint('mc_apy',c_apy(),'Annualized Percentage Yield','Rolling APY in %')
-	paint('mc_pri',c_price(),'Open-Market Valuation','Price per AES in USD')
-	paint3("mc_ypr", [c_apr(),c_apy(),c_rrr()], "Yield Rates", ["Base emission APR in %", "Rolling APY per compound in %", "All-time normalized APY in %"], [0,0,0])
-	paint2("mc_sup", [,c_sup(),c_aum()], "Balance-sheet Assets", ["", "Total Outstanding Supply, in AES", 'Assets Under Management, in AERA'], [1,0,0])
+	mc_pri = paint('mc_pri',c_price(),'Open-Market Valuation','Price per AES in USD')
+	mc_ypr = paint3("mc_ypr", [c_apr(),c_apy(),c_rrr()], "Yield Rates", ["Base emission APR in %", "Rolling APY per compound in %", "All-time normalized APY in %"], [0,0,0])
+	mc_sup = paint2("mc_sup", [,c_sup(),c_aum()], "Balance-sheet Assets", ["", "Total Outstanding Supply, in AES", 'Assets Under Management, in AERA'], [1,0,0])
+	setTimeout(async () => { paintnew(); }, 5000);
 }
+
+async function paintnew() {
+	//console.log("GGGGG",await g.apyr())
+	CBT = await provider.getBlock("latest");
+	LBT = blocktimes[blocktimes.length-1];
+	RUN = Math.floor((CBT.number-LBT[1])/10e3)
+	getblocks = []
+	for(i=0;i< RUN; i++){ getblocks[i] = provider.getBlock(LBT[1]+10e3+10e3*i) }
+	pgb = await Promise.all(getblocks)
+	console.log("pgb",pgb)
+	NBT = []
+	for(i=0;i< pgb.length; i++) { NBT.push([pgb[i].timestamp*1e3,pgb[i].number]) }
+	NBT.push([CBT.timestamp*1e3,CBT.number])
+	blocktimes.concat(NBT)
+////////////mc_shp = paint('mc_shp',blocktimes,'BT','bt','bt')
+	p_tvl=[];
+	p_inf=[];
+	p_1rr=[];
+	p_ap2=[];
+	p_tsp=[];
+
+	for(i=0;i< NBT.length;i++) {
+		data={"jsonrpc":"2.0","id":9,"method":"eth_call","params":[{"data":"0x370158ea","to":f_1_add}, "0x"+(NBT[i][1]).toString(16)]}
+		p_tvl[i]=g.tvl({blockTag: NBT[i][1]});
+		p_inf[i]=fetch(RPC_URL, { method: 'POST', body: JSON.stringify(data), headers: {'Content-Type': 'application/json' } });
+		p_1rr[i]=(new ethers.Contract("0x63D73d848b7F5142F11974188E9Fe3F5dE28f88c",["function rewardRate() public view returns(uint256)"],provider)).rewardRate({blockTag: NBT[i][1]});
+		p_ap2[i]=g.apyr({blockTag: NBT[i][1]});
+		p_tsp[i]=g.totalSupply({blockTag: NBT[i][1]});
+	}
+
+	rp_tvl = await Promise.all(p_tvl)
+		for(i=0;i< rp_tvl.length; i++) {
+			c_tvl.push( [NBT[i][0], Number(rp_tvl[i])/1e18] )
+		}
+	rp_inf = await Promise.all(p_inf)
+		for(i=0;i< rp_inf.length; i++) {
+			iii = await rp_inf[i].json();
+			oi=[];for(j=0;j< (iii.result.length-2)/64;j++){oi.push(Number("0x"+iii.result.substr(2+64*j,64)))}
+			c_inf.push( [NBT[i][0], oi] )
+		}
+	rp_1rr = await Promise.all(p_1rr)
+		for(i=0;i< rp_1rr.length; i++) {
+			l1rew.push( [NBT[i][0], Number(rp_1rr[i])/1e18] )
+		}
+	rp_ap2 = await Promise.all(p_ap2)
+		for(i=0;i< rp_ap2.length; i++) {
+			gapyr.push( [NBT[i][0], [ Number(rp_ap2[i][0]), Number(rp_ap2[i][1]), Number(rp_ap2[i][2]), Number(rp_ap2[i][3]), Number(rp_ap2[i][4]) ] ] )
+		}
+	rp_tsp = await Promise.all(p_tsp)
+		for(i=0;i< rp_tsp.length; i++) {
+			c_tot.push( [NBT[i][0], Number(rp_tsp[i])/1e18] )
+		}
+
+//	return
+
+	mc_tvl.destroy()
+	//mc_aum.destroy()
+	mc_shp.destroy()
+	mc_pri.destroy()
+	mc_ypr.destroy()
+	mc_sup.destroy()
+
+	mc_tvl = paint('mc_tvl',c_tvl,'Market Capitalization', 'Total Value Locked in USD')
+	//mc_aum = paint('mc_aum',c_aum(),'Assets Under Management','in AERA')
+	mc_shp = paint('mc_shp',c_shp(),'Accrued Yield, R.O.I., Relative Growth','AES Price in AERA')
+	mc_pri = paint('mc_pri',c_price(),'Open-Market Valuation','Price per AES in USD')
+	mc_ypr = paint3("mc_ypr", [c_apr(),c_apy(),c_rrr()], "Yield Rates", ["Base emission APR in %", "Rolling APY per compound in %", "All-time normalized APY in %"], [0,0,0])
+	mc_sup = paint2("mc_sup", [,c_sup(),c_aum()], "Balance-sheet Assets", ["", "Total Outstanding Supply, in AES", 'Assets Under Management, in AERA'], [1,0,0])
+
+	aab=c_apr()
+	$("c_aab").innerHTML = fornum(aab[aab.length-1][1],0)+ "%"
+	aar=c_apy()
+	$("c_aar").innerHTML = fornum(aar[aar.length-1][1],0)+ "%"
+
+}
+
+
+
 
 paintall()
 </script>
