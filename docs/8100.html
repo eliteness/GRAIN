@@ -182,11 +182,11 @@ This strategy takes in AERA Tokens as collateral deposits for issuing the AES to
 <script src="https://ftm.guru/chartjs-adapter-date-fns.bundle.min.js"></script>
 
 <canvas id="mc_shp" style="width:80%;height:50vh;max-height:500px"></canvas><br><br><br><br>
-<canvas id="mc_tvl" style="width:80%;height:50vh;max-height:500px"></canvas><br><br><br><br>
+<canvas id="mc_sup" style="width:80%;height:50vh;max-height:500px"></canvas><br><br><br><br>
 <!--<canvas id="mc_aum" style="width:80%;height:50vh;max-height:500px"></canvas><br><br><br><br>-->
 <canvas id="mc_ypr" style="width:80%;height:50vh;max-height:500px"></canvas><br><br><br><br>
+<canvas id="mc_tvl" style="width:80%;height:50vh;max-height:500px"></canvas><br><br><br><br>
 <canvas id="mc_pri" style="width:80%;height:50vh;max-height:500px"></canvas><br><br><br><br>
-<canvas id="mc_sup" style="width:80%;height:50vh;max-height:500px"></canvas>
 <!--<canvas id="mc_mrp" style="width:80%;height:50%;max-height:400px"></canvas>-->
 
 
@@ -535,6 +535,16 @@ function c_price() {
 	}
 	return a;
 }
+function c_prices() {
+	p2 = c_price()
+	sp = c_shp()
+	a = [];
+	for(i=0;i< p2.length;i++) {
+		p = [ p2[i][1]/sp[i][1] ];
+		a.push([c_tvl[i][0], p])
+	}
+	return a;
+}
 function c_aum() {
 	a = [];
 	for(i=0;i< c_tvl.length;i++) {
@@ -587,13 +597,14 @@ function c_apy() {
 
 
 function paintall() {
-	mc_tvl = paint('mc_tvl',c_tvl,'Market Capitalization', 'Total Value Locked in USD')
+	mc_tvl = paint('mc_tvl',c_tvl, 'Total Value Locked','Market Capitalization of AES in USD')
 	//mc_aum = paint('mc_aum',c_aum(),'Assets Under Management','in AERA')
 	mc_shp = paint('mc_shp',c_shp(),'Accrued Yield, R.O.I., Relative Growth','AES Price in AERA')
 	//paint('mc_sup',c_sup(),'Total Outstanding Supply', 'in AES')
 	//paint('mc_apr',c_apr(),'Annualized Percentage Return','Base APR in %')
 	//paint('mc_apy',c_apy(),'Annualized Percentage Yield','Rolling APY in %')
-	mc_pri = paint('mc_pri',c_price(),'Open-Market Valuation','Price per AES in USD')
+	//mc_pri = paint('mc_pri',c_price(),'Open-Market Valuation','AES Price in USD')
+	mc_pri = paint2('mc_pri',[,c_prices(),c_price()],'Open-Market Price Valuations',["",'AERA Price in USD','AES Price in USD'], [1,0,0])
 	mc_ypr = paint3("mc_ypr", [c_apr(),c_apy(),c_rrr()], "Yield Rates", ["Base emission APR in %", "Rolling APY per compound in %", "All-time normalized APY in %"], [0,0,0])
 	mc_sup = paint2("mc_sup", [,c_sup(),c_aum()], "Balance-sheet Assets", ["", "Total Outstanding Supply, in AES", 'Assets Under Management, in AERA'], [1,0,0])
 	setTimeout(async () => { paintnew(); }, 5000);
@@ -660,10 +671,11 @@ async function paintnew() {
 	mc_ypr.destroy()
 	mc_sup.destroy()
 
-	mc_tvl = paint('mc_tvl',c_tvl,'Market Capitalization', 'Total Value Locked in USD')
+	mc_tvl = paint('mc_tvl',c_tvl, 'Total Value Locked','Market Capitalization of AES in USD')
 	//mc_aum = paint('mc_aum',c_aum(),'Assets Under Management','in AERA')
 	mc_shp = paint('mc_shp',c_shp(),'Accrued Yield, R.O.I., Relative Growth','AES Price in AERA')
-	mc_pri = paint('mc_pri',c_price(),'Open-Market Valuation','Price per AES in USD')
+	//mc_pri = paint('mc_pri',c_price(),'Open-Market Valuation','AES Price in USD')
+	mc_pri = paint2('mc_pri',[,c_prices(),c_price()],'Open-Market Price Valuations',["",'AERA Price in USD','AES Price in USD'], [1,0,0])
 	mc_ypr = paint3("mc_ypr", [c_apr(),c_apy(),c_rrr()], "Yield Rates", ["Base emission APR in %", "Rolling APY per compound in %", "All-time normalized APY in %"], [0,0,0])
 	mc_sup = paint2("mc_sup", [,c_sup(),c_aum()], "Balance-sheet Assets", ["", "Total Outstanding Supply, in AES", 'Assets Under Management, in AERA'], [1,0,0])
 
